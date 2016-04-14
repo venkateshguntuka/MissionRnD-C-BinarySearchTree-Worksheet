@@ -21,15 +21,49 @@ struct node{
 	int data;
 	struct node *right;
 };
-
-
+void getInorder(struct node* root, int *arr, int *j)
+{
+	if (root == NULL)
+		return;
+	getInorder(root->left, arr, j);
+	arr[*j] = root->data;
+	*j = *j + 1;
+	getInorder(root->right, arr, j);
+}
+void getPreorder(struct node* root, int *arr, int *j)
+{
+	if (root == NULL)
+		return;
+	arr[*j] = root->data;
+	*j = *j + 1;
+	getPreorder(root->left, arr, j);
+	getPreorder(root->right, arr, j);
+}
+void getPostorder(struct node* root, int *arr, int *j)
+{
+	if (root == NULL)
+		return;
+	getPreorder(root->left, arr, j);
+	getPreorder(root->right, arr, j);
+	arr[*j] = root->data;
+	*j = *j + 1;
+}
 void inorder(struct node *root, int *arr){
-	
+	int j = 0;
+	if (root == NULL||arr==NULL)
+		return;
+	getInorder(root, arr, &j);
 }
 void preorder(struct node *root, int *arr){
-	
+	int j = 0;
+	if (root == NULL||arr==NULL)
+		return;
+	getPreorder(root, arr, &j);
 }
 void postorder(struct node *root, int *arr){
-	
+	int j = 0;
+	if (root == NULL||arr==NULL)
+		return;
+	getPostorder(root, arr, &j);
 }
 
