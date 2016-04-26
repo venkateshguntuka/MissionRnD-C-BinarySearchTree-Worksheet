@@ -32,14 +32,53 @@ Return -1 ,for Invalid Inputs
 
 #include <stdlib.h>
 #include <stdio.h>
-
+#define MAX 9999
 struct node{
   struct node * left;
   int data;
   struct node *right;
 };
+int minimum(int x, int y)
+{
+	if (x < y)
+		return x;
+	else
+		return y;
+}
+
+int closestDownDistance(struct node *root)
+{
+	if (root == NULL)
+		return MAX;
+	if (root->left == NULL && root->right == NULL)
+		return 0;
+
+	return 1 + minimum(closestDownDistance(root->left), closestDownDistance(root->right));
+}
+
+int findClosestLeafDistance(struct node *root, struct node* temp , struct node *ancestors[],int index)
+{
+	if (root == NULL)
+		return MAX;
+
+	if (root->data == temp->data)
+	{
+		int result = closestDownDistance(root);
+
+		for (int i = index - 1; i >= 0; i--)
+			result = minimum(result, index - i + closestDownDistance(ancestors[i]));
+		return result;
+	}
+
+	ancestors[index] = root;
+	return minimum(findClosestLeafDistance(root->left, temp, ancestors, index + 1),findClosestLeafDistance(root->right, temp, ancestors, index + 1));
+
+}
 
 int get_closest_leaf_distance(struct node *root, struct node *temp)
 {
-  return -1;
+	if (root==NULL||temp==NULL)
+	  return -1;
+	struct node *ancestors[100];
+	return findClosestLeafDistance(root, temp, ancestors, 0);
 }

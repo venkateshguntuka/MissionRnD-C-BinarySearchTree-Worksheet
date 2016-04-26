@@ -44,7 +44,7 @@ void correctBST(struct node* root, struct node** first,struct node** middle, str
 		correctBST(root->left, first, middle, last, prev);
 		if (*prev && root->data < (*prev)->data)
 		{
-			if (*first==NULL)
+			if (*middle==NULL)
 			{
 				*first = *prev;
 				*middle = root;
