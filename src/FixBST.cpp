@@ -31,7 +31,40 @@ struct node{
 	int data;
 	struct node *right;
 };
+void swap(int* x, int* y)
+{
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+void correctBST(struct node* root, struct node** first,struct node** middle, struct node** last,struct node** prev)
+{
+	if (root)
+	{
+		correctBST(root->left, first, middle, last, prev);
+		if (*prev && root->data < (*prev)->data)
+		{
+			if (*first==NULL)
+			{
+				*first = *prev;
+				*middle = root;
+			}
 
+			else
+				*last = root;
+		}
+		*prev = root;
+		correctBST(root->right, first, middle, last, prev);
+	}
+}
 void fix_bst(struct node *root){
+	struct node *first, *mid, *last, *prev;
+	first = mid = last = prev = NULL;
+	correctBST(root, &first, &mid, &last, &prev);
 
+	
+	if (first && last)
+		swap(&(first->data), &(last->data));
+	else if (first && mid)
+		swap(&(first->data), &(mid->data));
 }
